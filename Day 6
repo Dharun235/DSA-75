@@ -1,0 +1,45 @@
+
+Q2 https://leetcode.com/problems/evaluate-reverse-polish-notation/
+stk = []
+        for i in tokens:
+            if i not in "+-*/":
+                stk.append(int(i))
+            else:
+                r = stk.pop()
+                l = stk.pop()
+                if(i=="+"):
+                    stk.append(l+r)
+                elif(i=="-"):
+                    stk.append(l-r)
+                elif(i=="*"):
+                    stk.append(l*r)
+                else:
+                    stk.append(int(float(l)/r))
+        return stk.pop()
+Q1 https://leetcode.com/problems/min-stack/
+
+    # Initializing of 2 stacks as stack and stack_desc.
+    def __init__(self):
+        self.stack = []
+        self.stack_desc = []
+      
+    # Appending val to stack.
+    # Appending val to stack only if it's less than or equal to the minimum element.
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.stack_desc or val <= self.stack_desc[-1]:
+            self.stack_desc.append(val)
+    
+    # Pop the top element from stack    
+    # Pop the top element from stack desc if top elements match.
+    def pop(self) -> None:
+        if self.stack.pop() == self.stack_desc[-1]:
+            self.stack_desc.pop()
+    
+    # This will give the top element of stack.
+    def top(self) -> int:
+        return self.stack[-1]
+      
+    # This will retun the top element of stack_desc which is the minimum element.
+    def getMin(self) -> int:
+        return self.stack_desc[-1]
