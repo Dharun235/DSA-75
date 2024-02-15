@@ -1,45 +1,49 @@
 
 Q2 https://leetcode.com/problems/evaluate-reverse-polish-notation/
-stk = []
-        for i in tokens:
-            if i not in "+-*/":
-                stk.append(int(i))
-            else:
-                r = stk.pop()
-                l = stk.pop()
-                if(i=="+"):
-                    stk.append(l+r)
-                elif(i=="-"):
-                    stk.append(l-r)
-                elif(i=="*"):
-                    stk.append(l*r)
-                else:
-                    stk.append(int(float(l)/r))
-        return stk.pop()
+def eval_rpn(tokens):
+    stack = []
+
+    for token in tokens:
+        if token.isdigit() or (token[0] == '-' and token[1:].isdigit()):
+            stack.append(int(token))
+        else:
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+
+            if token == '+':
+                stack.append(operand1 + operand2)
+            elif token == '-':
+                stack.append(operand1 - operand2)
+            elif token == '*':
+                stack.append(operand1 * operand2)
+            elif token == '/':
+                stack.append(int(operand1 / operand2))
+
+    return stack[0]
+
 Q1 https://leetcode.com/problems/min-stack/
 
-    # Initializing of 2 stacks as stack and stack_desc.
+   class MinStack:
+
     def __init__(self):
         self.stack = []
-        self.stack_desc = []
-      
-    # Appending val to stack.
-    # Appending val to stack only if it's less than or equal to the minimum element.
+        self.min_stack = []
+
     def push(self, val: int) -> None:
         self.stack.append(val)
-        if not self.stack_desc or val <= self.stack_desc[-1]:
-            self.stack_desc.append(val)
-    
-    # Pop the top element from stack    
-    # Pop the top element from stack desc if top elements match.
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
     def pop(self) -> None:
-        if self.stack.pop() == self.stack_desc[-1]:
-            self.stack_desc.pop()
-    
-    # This will give the top element of stack.
+        if self.stack:
+            if self.stack[-1] == self.min_stack[-1]:
+                self.min_stack.pop()
+            self.stack.pop()
+
     def top(self) -> int:
-        return self.stack[-1]
-      
-    # This will retun the top element of stack_desc which is the minimum element.
+        if self.stack:
+            return self.stack[-1]
+
     def getMin(self) -> int:
-        return self.stack_desc[-1]
+        if self.min_stack:
+            return self.min_stack[-1]
