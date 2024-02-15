@@ -1,0 +1,30 @@
+Q2 https://leetcode.com/problems/daily-temperatures/
+    n = len(temperatures)
+    result = [0] * n
+    stack = []
+
+    for i in range(n):
+        while stack and temperatures[i] > temperatures[stack[-1]]:
+            prev_day = stack.pop()
+            result[prev_day] = i - prev_day
+
+        stack.append(i)
+
+    return result
+
+Q1 https://leetcode.com/problems/generate-parentheses/description/
+
+       def backtrack(s, left, right):
+            if len(s) == 2 * n:
+                result.append(s)
+                return
+
+            if left < n:
+                backtrack(s + '(', left + 1, right)
+
+            if right < left:
+                backtrack(s + ')', left, right + 1)
+
+        result = []
+        backtrack('', 0, 0)
+        return result
