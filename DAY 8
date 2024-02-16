@@ -12,3 +12,50 @@ Q1 https://leetcode.com/problems/car-fleet/
             times[0] = lead_time
 
     return fleets + bool(times)
+
+Q2 https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+ def __init__(self):
+        self.stack = []
+
+    def largestRectangleArea(self, heights):
+        max_area = 0
+
+        for i in range(len(heights)):
+            while self.stack and heights[i] < heights[self.stack[-1]]:
+                height = heights[self.stack.pop()]
+                width = i if not self.stack else i - self.stack[-1] - 1
+                max_area = max(max_area, height * width)
+
+            self.stack.append(i)
+
+        # Calculate remaining areas
+        max_area = max(max_area, max((heights[i] * (len(heights) - self.stack[-1] - 1) if self.stack else heights[i] * i) for i in range(len(heights))))
+
+        return max_area
+
+    def findMaxArea(self):
+        return max(self.stack)
+
+
+Psuedocode for Q2
+
+function largestRectangleArea(heights):
+    stack = []
+    max_area = 0
+
+    for i from 0 to len(heights) - 1:
+        while stack is not empty and heights[i] < heights[stack.top()]:
+            top_height = heights[stack.pop()]
+            width = i if stack is empty else i - stack.top() - 1
+            area = top_height * width
+            max_area = max(max_area, area)
+
+        stack.push(i)
+
+    while stack is not empty:
+        top_height = heights[stack.pop()]
+        width = len(heights) if stack is empty else len(heights) - stack.top() - 1
+        area = top_height * width
+        max_area = max(max_area, area)
+
+    return max_area
