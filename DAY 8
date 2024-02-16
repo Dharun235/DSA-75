@@ -1,0 +1,14 @@
+Q1 https://leetcode.com/problems/car-fleet/
+    cars = sorted(zip(position, speed), reverse=True)
+    times = [float(target - pos) / spd for pos, spd in cars]
+
+    fleets = 0
+    while len(times) > 1:
+        lead_time = times.pop(0)
+        follow_time = times[0]
+
+        if lead_time < follow_time:
+            fleets += 1
+            times[0] = lead_time
+
+    return fleets + bool(times)
