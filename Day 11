@@ -1,5 +1,5 @@
 Q1. https://leetcode.com/problems/trapping-rain-water/description/
-"Just logic. So only not under class section"
+"Just logic. So only not under class section. For my understanding in case I refer these in future."
 def trap(height):
     if not height or len(height) < 3:
         return 0
@@ -24,4 +24,19 @@ def trap(height):
 
     return water
 
-Q2. 
+Q2. https://leetcode.com/problems/binary-search/description/
+
+def search(nums, target):
+    left, right = 0, len(nums) - 1
+
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
