@@ -1,0 +1,63 @@
+Q1 - https://leetcode.com/problems/time-based-key-value-store/
+import bisect
+from collections import defaultdict
+
+class TimeMap:
+
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key, value, timestamp):
+        """
+        :type key: str
+        :type value: str
+        :type timestamp: int
+        :rtype: None
+        """
+        self.data[key].append((timestamp, value))
+
+    def get(self, key, timestamp):
+        """
+        :type key: str
+        :type timestamp: int
+        :rtype: str
+        """
+        if key not in self.data:
+            return ""
+
+        values = self.data[key]
+        index = bisect.bisect(values, (timestamp, chr(127))) - 1
+
+        if index >= 0:
+            return values[index][1]
+        else:
+            return ""
+
+Q2 - https://leetcode.com/problems/median-of-two-sorted-arrays/
+def findMedianSortedArrays(nums1, nums2):
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+
+    x, y = len(nums1), len(nums2)
+    low, high = 0, x
+
+    while low <= high:
+        partitionX = (low + high) // 2
+        partitionY = (x + y + 1) // 2 - partitionX
+
+        maxX = float('-inf') if partitionX == 0 else nums1[partitionX - 1]
+        minX = float('inf') if partitionX == x else nums1[partitionX]
+
+        maxY = float('-inf') if partitionY == 0 else nums2[partitionY - 1]
+        minY = float('inf') if partitionY == y else nums2[partitionY]
+
+        if maxX <= minY and maxY <= minX:
+            if (x + y) % 2 == 0:
+                return (max(maxX, maxY) + min(minX, minY)) / 2
+            else:
+                return max(maxX, maxY)
+
+        elif maxX > minY:
+            high = partitionX - 1
+        else:
+            low = partitionX + 1
