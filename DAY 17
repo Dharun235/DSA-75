@@ -1,0 +1,42 @@
+Q1- https://leetcode.com/problems/minimum-window-substring/
+
+from collections import Counter
+
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        # Check if the window contains all characters from t
+        def contains_all(window_count, t_count):
+            return all(window_count[char] >= t_count[char] for char in t_count)
+        
+        # Initialize variables
+        len_s = len(s)
+        len_t = len(t)
+        t_count = Counter(t)
+        window_count = Counter()
+        min_len = float('inf')
+        min_window = ""
+        left = 0
+        right = 0
+        
+        while right < len_s:
+            # Expand the window
+            window_count[s[right]] += 1
+            right += 1
+            
+            # Check if the window contains all characters from t
+            while contains_all(window_count, t_count):
+                # Update the minimum window substring
+                if right - left < min_len:
+                    min_len = right - left
+                    min_window = s[left:right]
+                
+                # Shrink the window
+                window_count[s[left]] -= 1
+                left += 1
+        
+        return min_window
