@@ -1,0 +1,63 @@
+Q1- https://leetcode.com/problems/longest-repeating-character-replacement/
+class Solution(object):
+    def characterReplacement(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        # Initialize variables
+        max_length = 0
+        max_count = 0
+        start = 0
+        char_count = [0] * 26  # Assuming only uppercase English letters
+        
+        for end in range(len(s)):
+            # Update the count of the current character
+            char_count[ord(s[end]) - ord('A')] += 1
+            # Update the maximum count of any character in the current window
+            max_count = max(max_count, char_count[ord(s[end]) - ord('A')])
+            
+            # Calculate the length of the current window
+            window_size = end - start + 1
+            
+            # If the total replacements needed exceed k, shrink the window
+            if window_size - max_count > k:
+                char_count[ord(s[start]) - ord('A')] -= 1
+                start += 1
+            
+            # Update the maximum length
+            max_length = max(max_length, window_size)
+        
+        return max_length
+
+Q2 - https://leetcode.com/problems/permutation-in-string/description/
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        """
+        :type s1: str
+        :type s2: str
+        :rtype: bool
+        """
+        # Check if s1's permutation is a substring of s2
+        def is_permutation(sub_s, s1):
+            return all(sub_s.count(char) == s1.count(char) for char in set(s1))
+        
+        # Initialize variables
+        len_s1 = len(s1)
+        len_s2 = len(s2)
+        s1_count = [0] * 26  # Assuming only lowercase English letters
+        
+        # Count the occurrences of characters in s1
+        for char in s1:
+            s1_count[ord(char) - ord('a')] += 1
+        
+        # Iterate through s2 using a sliding window
+        for i in range(len_s2 - len_s1 + 1):
+            sub_s = s2[i:i+len_s1]
+            
+            # Check if the current substring is a permutation of s1
+            if is_permutation(sub_s, s1):
+                return True
+        
+        return False
